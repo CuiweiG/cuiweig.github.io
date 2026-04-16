@@ -22,7 +22,8 @@ website:
       - icon: rss
         href: blog.xml
   page-footer:
-    center: "© 2026 Cuiwei Gao"
+    left: "© 2026 Cuiwei Gao"
+    right: "Syndicated on [R-bloggers](https://www.r-bloggers.com) · [R Weekly](https://rweekly.org)"
 
 format:
   html:

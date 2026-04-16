@@ -38,3 +38,5 @@ I maintain four R packages on CRAN:
 - GitHub: [CuiweiG](https://github.com/CuiweiG)
 - Twitter/X: [CuiweiG23](https://twitter.com/CuiweiG23)
 - Email: [48gaocuiwei@gmail.com](mailto:48gaocuiwei@gmail.com)
+
+This blog is syndicated on [R-bloggers](https://www.r-bloggers.com).
