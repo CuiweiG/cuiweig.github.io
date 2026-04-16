@@ -27,9 +27,9 @@ jobs:
           use-public-rspm: true
 
       - name: Install R packages
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          packages: knitr, rmarkdown
+        run: |
+          install.packages(c("knitr", "rmarkdown"), repos = "https://cloud.r-project.org")
+        shell: Rscript {0}
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
