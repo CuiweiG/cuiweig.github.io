@@ -1,7 +1,7 @@
 ---
 title: "Introducing lineagefreq: Tracking Pathogen Variant Dynamics in R"
 author: "Cuiwei Gao"
-date: "2026-04-17"
+date: "2026-04-16"
 categories: [R, Bioinformatics, Genomic Surveillance, CRAN]
 description: "A walkthrough of lineagefreq, an R package for modelling pathogen lineage frequencies, estimating growth advantages, and forecasting variant trajectories from genomic surveillance data."
 ---
