@@ -1,0 +1,237 @@
+---
+title: "Fair and Private Clinical Modeling: A Two-Package Workflow"
+author: "Cuiwei Gao"
+date: "2026-04-19"
+categories: [R, Clinical AI, Fairness, Privacy, CRAN]
+description: "A practical workflow combining syntheticdata and clinicalfair to generate privacy-preserving clinical datasets and audit prediction models for group fairness."
+---
+
+Clinical prediction models are increasingly used to triage patients, flag
+deterioration risk, and allocate scarce resources. Two problems shadow
+every deployment: **privacy** (can the training data be shared safely
+across institutions?) and **fairness** (does the model perform equitably
+across demographic groups?). These concerns are usually tackled separately,
+but they interact — you cannot audit a model for fairness if privacy rules
+prevent you from accessing the data it was trained on.
+
+This post walks through a combined workflow using two R packages:
+[syntheticdata](https://cran.r-project.org/package=syntheticdata) for
+generating and validating privacy-preserving synthetic clinical data, and
+[clinicalfair](https://cran.r-project.org/package=clinicalfair) for
+auditing the resulting prediction model for group fairness. Every function
+call below uses real exported functions from these packages.
+
+## Step 1: Generate Synthetic Data
+
+Suppose you have a clinical dataset with patient demographics, lab values,
+and a binary outcome (e.g., 30-day readmission). You want to share a
+synthetic copy with an external collaborator. `synthesize()` supports
+three methods: Gaussian copula, bootstrap resampling, and Laplace noise
+injection.
+
+```{r}
+#| eval: false
+library(syntheticdata)
+
+# Original clinical dataset (not shared externally)
+data_original <- read.csv("clinical_cohort.csv")
+
+# Generate synthetic data using Gaussian copula
+data_synthetic <- synthesize(
+  data = data_original,
+  method = "copula",
+  n = nrow(data_original)
+)
+```
+
+The copula method estimates the joint distribution of all variables via
+their empirical marginals and a Gaussian copula, then samples from it.
+This preserves correlation structure while breaking the one-to-one link
+between synthetic and real records.
+
+## Step 2: Validate the Synthetic Data
+
+Before trusting synthetic data for downstream analysis, you need to verify
+that it preserves the statistical properties of the original.
+`validate_synthetic()` runs a suite of distributional comparisons:
+
+```{r}
+#| eval: false
+validation <- validate_synthetic(
+  original = data_original,
+  synthetic = data_synthetic
+)
+validation
+```
+
+The output reports per-variable KS statistics for continuous columns and
+chi-squared statistics for categorical columns, along with an overall
+utility score. If a variable diverges substantially, you know to
+investigate before proceeding.
+
+## Step 3: Assess Privacy Risk
+
+Even well-constructed synthetic data can leak information about
+individuals in the original dataset, especially for rare combinations of
+attributes. `privacy_risk()` performs membership inference testing and
+attribute disclosure risk assessment:
+
+```{r}
+#| eval: false
+risk <- privacy_risk(
+  original = data_original,
+  synthetic = data_synthetic
+)
+risk
+```
+
+The membership inference test trains a classifier to distinguish real
+from synthetic records; if it cannot do much better than chance, the
+synthetic data does not obviously memorize the training set. The attribute
+disclosure component checks whether knowing a subset of quasi-identifiers
+in the synthetic data allows reconstructing sensitive attributes from the
+original. Together, these provide a practical privacy profile you can
+report to your IRB or data governance board.
+
+## Step 4: Train a Prediction Model
+
+With a validated, privacy-assessed synthetic dataset in hand, you (or your
+collaborator) can train a clinical prediction model. For this example we
+use a simple logistic regression, but the downstream fairness audit is
+model-agnostic.
+
+```{r}
+#| eval: false
+# Train on synthetic data
+model <- glm(
+  readmission ~ age + sex + race + lab_value_1 + lab_value_2 + comorbidity_index,
+  data = data_synthetic,
+  family = binomial
+)
+
+# Generate predictions
+data_synthetic$pred_prob <- predict(model, type = "response")
+data_synthetic$pred_class <- ifelse(data_synthetic$pred_prob > 0.5, 1, 0)
+```
+
+## Step 5: Prepare Data for Fairness Audit
+
+`fairness_data()` bundles the observed outcomes, predicted scores, and
+protected attributes into a structure that all downstream clinicalfair
+functions expect:
+
+```{r}
+#| eval: false
+library(clinicalfair)
+
+fdata <- fairness_data(
+  data = data_synthetic,
+  outcome = "readmission",
+  predicted = "pred_prob",
+  group = "race"
+)
+```
+
+## Step 6: Compute Group-Stratified Metrics
+
+`fairness_metrics()` computes performance metrics stratified by the
+protected attribute. By default it calculates sensitivity, specificity,
+PPV, NPV, AUC, and calibration slope for each group, with bootstrap
+confidence intervals:
+
+```{r}
+#| eval: false
+metrics <- fairness_metrics(fdata)
+metrics
+```
+
+The output is a tidy data frame — one row per group per metric — that
+you can pipe directly into ggplot2 for visualization or into reporting
+templates.
+
+## Step 7: Four-Fifths Rule Check
+
+The four-fifths (or 80%) rule, borrowed from employment discrimination
+law and increasingly applied to clinical AI, flags a metric as disparate
+if the worst-performing group's rate falls below 80% of the
+best-performing group's rate. `fairness_report()` automates this check:
+
+```{r}
+#| eval: false
+report <- fairness_report(fdata)
+report
+```
+
+The report identifies which metrics violate the four-fifths rule, which
+group comparisons drive the violation, and the magnitude of the disparity.
+This gives you a concrete, auditable summary to include in model
+documentation or regulatory submissions.
+
+## Step 8: Intersectional Analysis
+
+Single-axis fairness (stratifying by race alone, or sex alone) can mask
+compounded disparities at the intersection of multiple attributes.
+`intersectional_fairness()` crosses protected groups and repeats the
+analysis:
+
+```{r}
+#| eval: false
+inter <- intersectional_fairness(
+  data = data_synthetic,
+  outcome = "readmission",
+  predicted = "pred_prob",
+  groups = c("race", "sex")
+)
+inter
+```
+
+This might reveal, for example, that the model performs adequately for
+each race group and each sex group in isolation, but fails for a specific
+race–sex intersection. These are the disparities that single-axis audits
+miss.
+
+## Step 9: Threshold-Based Mitigation
+
+If disparities are identified, one practical mitigation strategy is to
+use group-specific decision thresholds that equalize a chosen metric
+(e.g., sensitivity) across groups. `threshold_optimize()` searches for
+the threshold set that achieves this:
+
+```{r}
+#| eval: false
+optimized <- threshold_optimize(
+  fdata,
+  metric = "sensitivity"
+)
+optimized
+```
+
+The output includes per-group thresholds and the resulting equalized
+metric values. This is not a silver bullet — adjusting thresholds trades
+off one metric against another — but it provides a transparent, auditable
+mechanism for reducing disparity, which is often what regulatory reviewers
+want to see.
+
+## Putting It Together
+
+The combined workflow — generate synthetic data, validate it, assess
+privacy risk, train a model, and audit for fairness — addresses the two
+core concerns in a single reproducible pipeline. The synthetic data lets
+you share and collaborate without exposing patient records; the fairness
+audit ensures the resulting model does not quietly disadvantage
+vulnerable subgroups.
+
+Both packages are on CRAN:
+
+```{r}
+#| eval: false
+install.packages("syntheticdata")
+install.packages("clinicalfair")
+```
+
+- **syntheticdata:** [CRAN](https://cran.r-project.org/package=syntheticdata) |
+  [GitHub](https://github.com/CuiweiG/syntheticdata) |
+  [Docs](https://cuiweig.github.io/syntheticdata)
+- **clinicalfair:** [CRAN](https://cran.r-project.org/package=clinicalfair) |
+  [GitHub](https://github.com/CuiweiG/clinicalfair) |
+  [Docs](https://cuiweig.github.io/clinicalfair)

@@ -1,0 +1,148 @@
+---
+title: "Packages"
+toc: true
+---
+
+## lineagefreq
+
+**Lineage Frequency Dynamics from Genomic Surveillance Counts**
+
+Version: 0.2.0 (CRAN) / 0.6.0 (dev)
+
+[![CRAN status](https://www.r-pkg.org/badges/version/lineagefreq)](https://cran.r-project.org/package=lineagefreq)
+[![R-CMD-check](https://github.com/CuiweiG/lineagefreq/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CuiweiG/lineagefreq/actions/workflows/R-CMD-check.yaml)
+
+Multinomial logistic regression for pathogen variant frequency dynamics,
+growth advantage estimation, and short-term forecasting with rolling-origin
+backtesting. Five engines (frequentist and Bayesian) behind a unified
+interface; ships with real CDC SARS-CoV-2 data.
+
+**Links:**
+[CRAN](https://cran.r-project.org/package=lineagefreq) |
+[GitHub](https://github.com/CuiweiG/lineagefreq) |
+[Documentation](https://cuiweig.github.io/lineagefreq)
+
+**Install:**
+
+```r
+install.packages("lineagefreq")
+```
+
+**Core functions:**
+
+| Function | Description |
+|----------|-------------|
+| `fit_model()` | Fit a lineage frequency model using any of five engines |
+| `growth_advantage()` | Estimate relative growth advantages from a fitted model |
+| `forecast()` | Generate short-term frequency forecasts |
+| `backtest()` | Rolling-origin cross-validation for forecast evaluation |
+| `score_forecasts()` | Score forecast accuracy with proper scoring rules |
+
+---
+
+## survinger
+
+**Design-Adjusted Inference for Pathogen Lineage Surveillance**
+
+Version: 0.1.1
+
+[![CRAN status](https://www.r-pkg.org/badges/version/survinger)](https://cran.r-project.org/package=survinger)
+[![R-CMD-check](https://github.com/CuiweiG/survinger/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CuiweiG/survinger/actions/workflows/R-CMD-check.yaml)
+
+Design-adjusted prevalence estimation for genomic surveillance under
+unequal sequencing rates, using Horvitz–Thompson and Hajek estimators
+with right-truncation delay correction and Neyman-optimal resource
+allocation.
+
+**Links:**
+[CRAN](https://cran.r-project.org/package=survinger) |
+[GitHub](https://github.com/CuiweiG/survinger) |
+[Documentation](https://cuiweig.github.io/survinger)
+
+**Install:**
+
+```r
+install.packages("survinger")
+```
+
+**Core functions:**
+
+| Function | Description |
+|----------|-------------|
+| `surv_design()` | Define a surveillance sampling design |
+| `surv_lineage_prevalence()` | Estimate lineage prevalence with design adjustment |
+| `surv_optimize_allocation()` | Neyman-optimal allocation of sequencing resources |
+| `surv_adjusted_prevalence()` | Adjusted prevalence with right-truncation correction |
+
+---
+
+## clinicalfair
+
+**Algorithmic Fairness Assessment for Clinical Prediction Models**
+
+Version: 0.1.1
+
+[![CRAN status](https://www.r-pkg.org/badges/version/clinicalfair)](https://cran.r-project.org/package=clinicalfair)
+[![R-CMD-check](https://github.com/CuiweiG/clinicalfair/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CuiweiG/clinicalfair/actions/workflows/R-CMD-check.yaml)
+
+Model-agnostic fairness auditing for clinical prediction models. Computes
+group-stratified metrics with bootstrap CIs, flags four-fifths rule
+violations, and performs intersectional analysis and threshold-based
+mitigation.
+
+**Links:**
+[CRAN](https://cran.r-project.org/package=clinicalfair) |
+[GitHub](https://github.com/CuiweiG/clinicalfair) |
+[Documentation](https://cuiweig.github.io/clinicalfair)
+
+**Install:**
+
+```r
+install.packages("clinicalfair")
+```
+
+**Core functions:**
+
+| Function | Description |
+|----------|-------------|
+| `fairness_data()` | Prepare data for fairness analysis |
+| `fairness_metrics()` | Compute group-stratified performance metrics |
+| `fairness_report()` | Generate a four-fifths rule compliance report |
+| `threshold_optimize()` | Find group-specific thresholds to equalize metrics |
+| `intersectional_fairness()` | Intersectional subgroup fairness analysis |
+
+---
+
+## syntheticdata
+
+**Synthetic Clinical Data Generation and Privacy-Preserving Validation**
+
+Version: 0.1.1
+
+[![CRAN status](https://www.r-pkg.org/badges/version/syntheticdata)](https://cran.r-project.org/package=syntheticdata)
+[![R-CMD-check](https://github.com/CuiweiG/syntheticdata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CuiweiG/syntheticdata/actions/workflows/R-CMD-check.yaml)
+
+Synthetic clinical data generation via Gaussian copula, bootstrap, and
+Laplace noise, with integrated distributional validation, privacy risk
+assessment, and downstream model fidelity testing.
+
+**Links:**
+[CRAN](https://cran.r-project.org/package=syntheticdata) |
+[GitHub](https://github.com/CuiweiG/syntheticdata) |
+[Documentation](https://cuiweig.github.io/syntheticdata)
+
+**Install:**
+
+```r
+install.packages("syntheticdata")
+```
+
+**Core functions:**
+
+| Function | Description |
+|----------|-------------|
+| `synthesize()` | Generate synthetic data using copula, bootstrap, or noise methods |
+| `validate_synthetic()` | Distributional validation of synthetic vs. original data |
+| `privacy_risk()` | Membership inference and attribute disclosure risk assessment |
+| `model_fidelity()` | Compare downstream model performance on real vs. synthetic data |
+| `compare_methods()` | Benchmark multiple synthesis methods side by side |

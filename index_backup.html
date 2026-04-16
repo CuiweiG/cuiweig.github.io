@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuiwei Gao — Health Data Analyst &amp; R Developer</title>
+  <style>
+    :root {
+      --text: #2d3748;
+      --text-secondary: #4a5568;
+      --accent: #2b6cb0;
+      --accent-light: #ebf4ff;
+      --border: #e2e8f0;
+      --bg: #ffffff;
+      --bg-alt: #f7fafc;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      color: var(--text);
+      line-height: 1.7;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      background: var(--bg);
+    }
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      color: var(--text);
+    }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.4rem;
+    }
+    p { margin-bottom: 1rem; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+    .links {
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+    .links a { margin-right: 1.2rem; }
+    .package {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1rem;
+    }
+    .package h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .package p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+    .package .pkg-links {
+      font-size: 0.88rem;
+    }
+    .package .pkg-links a {
+      margin-right: 0.8rem;
+    }
+    .badge {
+      display: inline-block;
+      margin-right: 0.4rem;
+      vertical-align: middle;
+    }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cuiwei Gao</h1>
+  <p class="subtitle">Health Data Analyst &amp; R Developer</p>
+
+  <div class="links">
+    <a href="https://github.com/CuiweiG">GitHub</a>
+    <a href="https://twitter.com/CuiweiG23">Twitter/X</a>
+    <a href="mailto:48gaocuiwei@gmail.com">Email</a>
+  </div>
+
+  <p>
+    I develop open-source R packages for problems at the intersection of
+    biostatistics, public health, and clinical informatics. My current work
+    focuses on genomic surveillance methodology, algorithmic fairness in
+    clinical AI, and privacy-preserving data generation for multi-site
+    clinical research.
+  </p>
+
+  <h2>R Packages on CRAN</h2>
+
+  <div class="package">
+    <h3>survinger</h3>
+    <p>
+      Design-adjusted inference for pathogen lineage surveillance under
+      unequal sequencing and reporting delays. Implements Horvitz&ndash;Thompson,
+      Hajek, and post-stratified estimators with Wilson score intervals;
+      right-truncation-corrected delay distributions for nowcasting; and
+      Neyman-optimal resource allocation. Validated on 99,093 real ECDC
+      sequences from five EU countries.
+    </p>
+    <div class="pkg-links">
+      <a href="https://CRAN.R-project.org/package=survinger">CRAN</a>
+      <a href="https://github.com/CuiweiG/survinger">GitHub</a>
+    </div>
+  </div>
+
+  <div class="package">
+    <h3>lineagefreq</h3>
+    <p>
+      Modelling pathogen lineage frequency dynamics, estimating growth
+      advantages, and generating short-term forecasts from genomic
+      surveillance count data. Provides five estimation engines (frequentist
+      and Bayesian) behind a unified interface, with built-in rolling-origin
+      backtesting. Ships with real CDC SARS-CoV-2 surveillance data.
+    </p>
+    <div class="pkg-links">
+      <a href="https://CRAN.R-project.org/package=lineagefreq">CRAN</a>
+      <a href="https://github.com/CuiweiG/lineagefreq">GitHub</a>
+    </div>
+  </div>
+
+  <div class="package">
+    <h3>clinicalfair</h3>
+    <p>
+      Post-hoc fairness auditing for clinical prediction models.
+      Computes group-stratified performance metrics with bootstrap
+      confidence intervals, detects four-fifths rule violations,
+      visualises calibration and ROC disparities, and performs
+      threshold-based mitigation. Model-agnostic and aligned with
+      FDA AI/ML guidance.
+    </p>
+    <div class="pkg-links">
+      <a href="https://CRAN.R-project.org/package=clinicalfair">CRAN</a>
+      <a href="https://github.com/CuiweiG/clinicalfair">GitHub</a>
+    </div>
+  </div>
+
+  <div class="package">
+    <h3>syntheticdata</h3>
+    <p>
+      Generating synthetic clinical datasets with integrated privacy
+      auditing. Implements Gaussian copula, bootstrap, and Laplace noise
+      synthesis, with built-in distributional validation, membership
+      inference testing, attribute disclosure risk assessment, and
+      downstream model fidelity comparison. Designed for HIPAA/GDPR-constrained
+      data sharing.
+    </p>
+    <div class="pkg-links">
+      <a href="https://CRAN.R-project.org/package=syntheticdata">CRAN</a>
+      <a href="https://github.com/CuiweiG/syntheticdata">GitHub</a>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 Cuiwei Gao
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+---
+title: "Cuiwei Gao"
+subtitle: "Health Data Analyst & R Developer"
+toc: false
+---
+
+[GitHub](https://github.com/CuiweiG) |
+[Twitter/X](https://twitter.com/CuiweiG23) |
+[Email](mailto:48gaocuiwei@gmail.com)
+
+I develop open-source R packages for problems at the intersection of
+biostatistics, public health, and clinical informatics. My current work
+focuses on genomic surveillance methodology, algorithmic fairness in
+clinical AI, and privacy-preserving data generation for multi-site
+clinical research.
+
+## R Packages on CRAN
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+:::: {.card}
+### [lineagefreq](https://cran.r-project.org/package=lineagefreq)
+
+Modelling pathogen lineage frequency dynamics, estimating growth
+advantages, and generating short-term forecasts from genomic
+surveillance count data. Five estimation engines (frequentist and
+Bayesian) behind a unified interface, with built-in rolling-origin
+backtesting. Ships with real CDC SARS-CoV-2 surveillance data.
+
+[CRAN](https://cran.r-project.org/package=lineagefreq) |
+[GitHub](https://github.com/CuiweiG/lineagefreq) |
+[Docs](https://cuiweig.github.io/lineagefreq)
+::::
+:::
+
+::: {.g-col-12 .g-col-md-6}
+:::: {.card}
+### [survinger](https://cran.r-project.org/package=survinger)
+
+Design-adjusted inference for pathogen lineage surveillance under
+unequal sequencing and reporting delays. Implements Horvitz–Thompson,
+Hajek, and post-stratified estimators with Wilson score intervals;
+right-truncation-corrected delay distributions for nowcasting; and
+Neyman-optimal resource allocation.
+
+[CRAN](https://cran.r-project.org/package=survinger) |
+[GitHub](https://github.com/CuiweiG/survinger) |
+[Docs](https://cuiweig.github.io/survinger)
+::::
+:::
+
+::: {.g-col-12 .g-col-md-6}
+:::: {.card}
+### [clinicalfair](https://cran.r-project.org/package=clinicalfair)
+
+Post-hoc fairness auditing for clinical prediction models.
+Computes group-stratified performance metrics with bootstrap
+confidence intervals, detects four-fifths rule violations,
+visualises calibration and ROC disparities, and performs
+threshold-based mitigation. Model-agnostic and aligned with
+FDA AI/ML guidance.
+
+[CRAN](https://cran.r-project.org/package=clinicalfair) |
+[GitHub](https://github.com/CuiweiG/clinicalfair) |
+[Docs](https://cuiweig.github.io/clinicalfair)
+::::
+:::
+
+::: {.g-col-12 .g-col-md-6}
+:::: {.card}
+### [syntheticdata](https://cran.r-project.org/package=syntheticdata)
+
+Generating synthetic clinical datasets with integrated privacy
+auditing. Implements Gaussian copula, bootstrap, and Laplace noise
+synthesis, with built-in distributional validation, membership
+inference testing, attribute disclosure risk assessment, and
+downstream model fidelity comparison. Designed for HIPAA/GDPR-constrained
+data sharing.
+
+[CRAN](https://cran.r-project.org/package=syntheticdata) |
+[GitHub](https://github.com/CuiweiG/syntheticdata) |
+[Docs](https://cuiweig.github.io/syntheticdata)
+::::
+:::
+
+:::

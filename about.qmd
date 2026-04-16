@@ -1,0 +1,40 @@
+---
+title: "About"
+---
+
+## Cuiwei Gao
+
+I am an independent researcher and R package developer working at the
+intersection of biostatistics, public health, and clinical informatics.
+
+### Research Focus
+
+- **Genomic surveillance methodology** — statistical models for tracking
+  pathogen lineage dynamics and informing public health response
+- **Algorithmic fairness in clinical AI** — post-hoc auditing tools to
+  detect and mitigate disparities in clinical prediction models
+- **Privacy-preserving data generation** — synthetic data methods that
+  enable multi-site clinical research under HIPAA/GDPR constraints
+
+### CRAN Packages
+
+I maintain four R packages on CRAN:
+
+| Package | Description |
+|---------|-------------|
+| [lineagefreq](https://cran.r-project.org/package=lineagefreq) | Lineage frequency dynamics and growth advantage estimation |
+| [survinger](https://cran.r-project.org/package=survinger) | Design-adjusted inference for pathogen lineage surveillance |
+| [clinicalfair](https://cran.r-project.org/package=clinicalfair) | Algorithmic fairness assessment for clinical prediction models |
+| [syntheticdata](https://cran.r-project.org/package=syntheticdata) | Synthetic clinical data generation and privacy-preserving validation |
+
+### Community
+
+- [R Weekly](https://rweekly.org/) contributor
+  ([PR #2007](https://github.com/rweekly/rweekly.org/pull/2007),
+   [Issue #2004](https://github.com/rweekly/rweekly.org/issues/2004))
+
+### Contact
+
+- GitHub: [CuiweiG](https://github.com/CuiweiG)
+- Twitter/X: [CuiweiG23](https://twitter.com/CuiweiG23)
+- Email: [48gaocuiwei@gmail.com](mailto:48gaocuiwei@gmail.com)

@@ -1,0 +1,171 @@
+---
+title: "Introducing lineagefreq: Tracking Pathogen Variant Dynamics in R"
+author: "Cuiwei Gao"
+date: "2026-04-17"
+categories: [R, Bioinformatics, Genomic Surveillance, CRAN]
+description: "A walkthrough of lineagefreq, an R package for modelling pathogen lineage frequencies, estimating growth advantages, and forecasting variant trajectories from genomic surveillance data."
+---
+
+When a new pathogen variant begins circulating, one of the first questions
+public health agencies ask is: *how fast is it growing relative to existing
+lineages?* Answering that question from raw sequence counts is harder than
+it looks. Counts are noisy, sampling is uneven across time and geography,
+and the multinomial nature of the data — every sequence belongs to exactly
+one lineage — means you cannot just fit separate logistic curves and call
+it a day.
+
+[lineagefreq](https://cran.r-project.org/package=lineagefreq) is an R
+package that tackles this problem end to end. It fits multinomial logistic
+regression models to genomic surveillance count data, estimates relative
+growth advantages between lineages, generates short-term frequency
+forecasts, and validates those forecasts with rigorous rolling-origin
+backtesting. The current CRAN release is 0.2.0; the development version
+(0.6.0) on [GitHub](https://github.com/CuiweiG/lineagefreq) adds several
+new features.
+
+## Five Engines, One Interface
+
+A key design decision in lineagefreq is offering multiple estimation
+engines behind a single `fit_model()` interface. You choose the engine
+with one argument; everything else — data format, output structure,
+downstream methods — stays the same.
+
+The five engines are:
+
+- **`mlr`** — standard multinomial logistic regression (frequentist,
+  fast, good default)
+- **`hier_mlr`** — hierarchical multinomial logistic regression for
+  multi-site or multi-region data
+- **`piantham`** — the Piantham et al. method, commonly used in
+  SARS-CoV-2 variant tracking
+- **`fga`** — fixed growth advantage model, assumes constant relative
+  fitness over the estimation window
+- **`garw`** — growth advantage random walk, allows the fitness advantage
+  to drift over time (Bayesian)
+
+This means you can benchmark multiple statistical approaches on the same
+dataset with minimal code changes, which is exactly what you want when
+advising decision-makers who need to understand model uncertainty.
+
+## Built-in Real-World Datasets
+
+Rather than shipping toy data, lineagefreq includes four real CDC and
+public surveillance datasets:
+
+- `cdc_sarscov2_jn1` — SARS-CoV-2 JN.1 sublineage emergence data
+- `cdc_ba2_transition` — the BA.1-to-BA.2 transition in the United States
+- `influenza_h3n2` — influenza H3N2 clade competition data
+- `sarscov2_us_2022` — US Omicron sublineage dynamics across 2022
+
+These serve double duty: they make vignettes and examples reproducible,
+and they provide realistic test cases for validating new methods. The
+BA.2 transition dataset, for example, is the basis for the validation
+result I discuss below.
+
+## A Quick Example
+
+Here is a minimal workflow using the BA.2 transition data. We fit a model,
+extract growth advantages, and generate a short-term forecast:
+
+```{r}
+#| eval: false
+library(lineagefreq)
+
+# Load the BA.1 → BA.2 transition dataset
+data("cdc_ba2_transition")
+
+# Fit a multinomial logistic regression model
+fit <- fit_model(
+  data = cdc_ba2_transition,
+  engine = "mlr"
+)
+
+# Estimate growth advantages relative to the reference lineage
+ga <- growth_advantage(fit)
+ga
+```
+
+The `growth_advantage()` output includes point estimates and confidence
+intervals. For the BA.2 versus BA.1 comparison, lineagefreq estimates a
+growth advantage of approximately 1.34×, which aligns well with published
+estimates in the literature (typically reported in the range of 1.3–1.5×).
+
+Generating a forecast and evaluating it is equally straightforward:
+
+```{r}
+#| eval: false
+# 4-week-ahead frequency forecast
+fc <- forecast(fit, horizon = 4)
+
+# Rolling-origin backtesting with proper scoring
+bt <- backtest(
+  data = cdc_ba2_transition,
+  engine = "mlr",
+  horizon = 4,
+  window = 8
+)
+
+# Score the backtested forecasts
+scores <- score_forecasts(bt)
+scores
+```
+
+The `backtest()` function walks a sliding window across the time series,
+refitting the model at each origin and scoring out-of-sample predictions.
+`score_forecasts()` computes proper scoring rules (log score, Brier score)
+so you can compare engines or parameter choices on a level playing field.
+
+## Tidy Integration
+
+lineagefreq fits naturally into the tidyverse ecosystem. Fitted model
+objects support the standard [broom](https://broom.tidymodels.org/)
+generics:
+
+```{r}
+#| eval: false
+library(broom)
+
+# Coefficient-level summaries
+tidy(fit)
+
+# Model-level goodness-of-fit statistics
+glance(fit)
+
+# Observation-level fitted values and residuals
+augment(fit)
+```
+
+This makes it easy to pipe results into ggplot2 for visualization or into
+dplyr workflows for further analysis, without learning a new set of
+accessor functions.
+
+## Eight Vignettes
+
+The package ships with eight vignettes covering everything from a
+getting-started guide to advanced topics like hierarchical multi-region
+modelling and custom scoring rule implementation. The vignettes are built
+around the real datasets and walk through complete analysis pipelines, not
+just isolated function calls. You can browse them on the
+[pkgdown site](https://cuiweig.github.io/lineagefreq).
+
+## What Comes Next
+
+The development version (0.6.0) on GitHub is where active work happens.
+Current priorities include improving the Bayesian engine performance,
+adding support for weighted observation models, and expanding the forecast
+evaluation toolkit. If you work in genomic surveillance or infectious
+disease modelling and want to try it out, I would love to hear your
+feedback.
+
+- **CRAN:** <https://cran.r-project.org/package=lineagefreq>
+- **GitHub:** <https://github.com/CuiweiG/lineagefreq>
+- **pkgdown:** <https://cuiweig.github.io/lineagefreq>
+- **Posit Community tutorial:** [From Sequence Counts to Variant Forecasts](https://forum.posit.co/t/from-sequence-counts-to-variant-forecasts-a-lineagefreq-tutorial/211035)
+
+```{r}
+#| eval: false
+install.packages("lineagefreq")
+
+# Or the development version:
+# pak::pak("CuiweiG/lineagefreq")
+```

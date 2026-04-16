@@ -1,0 +1,32 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Cuiwei Gao"
+  description: "R packages for genomic surveillance, clinical AI fairness, and privacy-preserving data generation"
+  site-url: https://cuiweig.github.io
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: blog.qmd
+        text: Blog
+      - href: packages.qmd
+        text: Packages
+      - href: about.qmd
+        text: About
+    right:
+      - icon: github
+        href: https://github.com/CuiweiG
+      - icon: rss
+        href: blog.xml
+  page-footer:
+    center: "© 2026 Cuiwei Gao"
+
+format:
+  html:
+    theme: cosmo
+    highlight-style: github
+    code-copy: true
+    toc: true
