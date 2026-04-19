@@ -14,6 +14,8 @@ website:
         text: Blog
       - href: packages.qmd
         text: Packages
+      - href: https://cuiweig.github.io/portfolio
+        text: Portfolio
       - href: about.qmd
         text: About
     right:

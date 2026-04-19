@@ -27,6 +27,18 @@ I maintain four R packages on CRAN:
 | [clinicalfair](https://cran.r-project.org/package=clinicalfair) | Algorithmic fairness assessment for clinical prediction models |
 | [syntheticdata](https://cran.r-project.org/package=syntheticdata) | Synthetic clinical data generation and privacy-preserving validation |
 
+### Portfolio
+
+End-to-end analyses showcasing applied R for biostatistics and
+public health decision-making:
+
+[**cuiweig.github.io/portfolio**](https://cuiweig.github.io/portfolio)
+
+Four independent case studies covering variant forecasting,
+algorithmic fairness audit, surveillance design optimisation,
+and synthetic data release — each built entirely with my CRAN
+packages on real or realistically-simulated data.
+
 ### Community
 
 - [R Weekly](https://rweekly.org/) contributor
